@@ -6,10 +6,13 @@ class FileManager:
     def write_to_file(self, file_name, text):
         file = open(file_name, "w")
         file.write(text)
+        file.close()
 
     def read_from_file(self, file_name):
         file = open(file_name, "r")
-        return file.read()
+        data = file.read()
+        file.close()
+        return data
 
     def get_json(self, file_name):
         return json.loads(self.read_from_file(file_name))

@@ -30,6 +30,14 @@ class Entity:
                 self.set_health(self.health - damage)
                 print("{} missed and hit themselves dealing {} damage".format(self.name, damage))
 
+    def run_from(self, thing_attacking):
+        roll = self.dice_roll(20)
+        if roll >= 15:
+            print("{} got away from {} safely".format(self.name, thing_attacking))
+        else:
+            self.health = self.health - thing_attacking.attack * 2
+
+
     def get_health(self):
         return self.health
 
@@ -59,12 +67,13 @@ class Hero(Entity):
         self.defence = character_data["defence"]
         self.money = character_data["money"]
 
-    def level_up(self):
+    def level_up(self, enemy):
         level_splice = int(self.level[-1])
         level_splice += 1
         self.level = "level {}".format(level_splice)
         self.attack += 5
         self.defence += 5
+        self.money += enemy.money
 
     def save(self):
         data = {
@@ -91,3 +100,5 @@ class Enemy(Entity):
         self.health = enemy_data["enemies"][self.name]["health"]
         self.attack = enemy_data["enemies"][self.name]["attack"]
         self.defence = enemy_data["enemies"][self.name]["defence"]
+        self.money = random.randrange(1000)
+

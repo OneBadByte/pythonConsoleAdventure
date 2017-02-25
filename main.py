@@ -1,3 +1,4 @@
+import screen
 import file_manager
 import store
 import entity
@@ -8,6 +9,7 @@ file_stuff = file_manager.FileManager()
 game_is_running = True
 
 filer = file_manager.FileManager()
+screen_stuff = screen.Screen()
 
 
 def opening_screen():
@@ -49,52 +51,67 @@ def character_creator():
     filer.write_to_file("json/{}.json".format(name), json.dumps(data))
     return "json/{}.json".format(name)
 
+
+def combat_menu(player, enemy):
+    print()
+    user_input = input("what do you want to do?\nfight or run: ")
+    if user_input == "fight":
+        player.attack_target(enemy)
+    elif user_input == "run":
+        player.run_from(enemy)
+    else:
+        pass
+
+
 def level_1(file_name):
     player = entity.Hero(file_name)
     enemy = entity.Enemy()
-    while True:
+    is_level_running = True
+    print("you have been attacked by {}".format(enemy.name))
+    while is_level_running:
         print()
-        #player.check_if_alive()
-        #enemy.check_if_alive()
-        player.attack_target(enemy)
+        screen_stuff.clear_screen()
+        combat_menu(player, enemy)
         enemy.attack_target(player)
         if enemy.check_if_alive() == False or player.check_if_alive() == False:
-            player.level_up()
+            player.level_up(enemy)
             player.save()
             break
         time.sleep(3)
+
 
 def level_2(file_name):
     player = entity.Hero(file_name)
     enemy = entity.Enemy()
     while True:
         print()
-        # player.check_if_alive()
-        # enemy.check_if_alive()
-        player.attack_target(enemy)
+        screen_stuff.clear_screen()
+        combat_menu(player, enemy)
         enemy.attack_target(player)
         if enemy.check_if_alive() == False or player.check_if_alive() == False:
-            player.level_up()
+            player.level_up(enemy)
             player.save()
             break
         time.sleep(3)
+
 
 def level_3(file_name):
     player = entity.Hero(file_name)
     enemy = entity.Enemy()
     while True:
         print()
-        # player.check_if_alive()
-        # enemy.check_if_alive()
-        player.attack_target(enemy)
+        screen_stuff.clear_screen()
+        combat_menu(player, enemy)
         enemy.attack_target(player)
         if enemy.check_if_alive() == False or player.check_if_alive() == False:
-            player.level_up()
+            player.level_up(enemy)
             player.save()
             break
         time.sleep(3)
 
+
 file_name = opening_screen()
+screen_stuff.clear_screen()
 while game_is_running:
     level_to_start = filer.get_json(file_name)["level"]
     if level_to_start == "level 1":
