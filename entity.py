@@ -9,6 +9,7 @@ class Entity:
     attack = 0
     defence = 0
     money = 0
+    alive = True
 
     file_stuff = file_manager.FileManager()
 
@@ -33,9 +34,14 @@ class Entity:
     def run_from(self, thing_attacking):
         roll = self.dice_roll(20)
         if roll >= 15:
-            print("{} got away from {} safely".format(self.name, thing_attacking))
+            print("{} got away from {} safely".format(self.name, thing_attacking.name))
+            return True
         else:
-            self.health = self.health - thing_attacking.attack * 2
+            damage = thing_attacking.attack * 2
+            self.set_health(self.health - damage)
+            print("{} failed to get away and got hit doing {} damage".format(self.name, damage))
+            return False
+
 
 
     def get_health(self):
@@ -44,13 +50,13 @@ class Entity:
     def set_health(self, number):
         self.health = number
 
-
     def dice_roll(self, sides):
         return random.randrange(1, sides)
 
     def check_if_alive(self):
         if self.health <= 0:
             print("{} DIED!".format(self.name))
+            self.alive = False
             return False
         else:
             print("{} health is {}".format(self.name, self.health))
@@ -66,6 +72,7 @@ class Hero(Entity):
         self.attack = character_data["attack"]
         self.defence = character_data["defence"]
         self.money = character_data["money"]
+
 
     def level_up(self, enemy):
         level_splice = int(self.level[-1])
@@ -101,4 +108,10 @@ class Enemy(Entity):
         self.attack = enemy_data["enemies"][self.name]["attack"]
         self.defence = enemy_data["enemies"][self.name]["defence"]
         self.money = random.randrange(1000)
+
+    def enemy_ai(self, player):
+        if self.health < 20:
+            self.run_from(player)
+        else:
+            self.attack_target(player)
 

@@ -67,12 +67,12 @@ def level_1(file_name):
     player = entity.Hero(file_name)
     enemy = entity.Enemy()
     is_level_running = True
-    print("you have been attacked by {}".format(enemy.name))
+    print("{} have been attacked by {}".format(player.name, enemy.name))
     while is_level_running:
         print()
         screen_stuff.clear_screen()
         combat_menu(player, enemy)
-        enemy.attack_target(player)
+        enemy.enemy_ai(player)
         if enemy.check_if_alive() == False or player.check_if_alive() == False:
             player.level_up(enemy)
             player.save()
