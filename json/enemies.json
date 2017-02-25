@@ -1,0 +1,19 @@
+{
+  "enemies" :{
+  "dragon": {
+    "health": 150,
+    "attack": 10,
+    "defence": 15
+  },
+  "wizard": {
+    "health": 100,
+    "attack": 15,
+    "defence": 10
+  },
+  "wolf": {
+    "health": 50,
+    "attack": 12,
+    "defence": 5
+  }
+}
+}
